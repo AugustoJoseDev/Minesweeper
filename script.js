@@ -2,9 +2,9 @@ const screen = document.getElementById('screen')
 const context = screen.getContext('2d')
 
 const images = {
+    gamewin: new Image(),
     gameover: new Image(),
     doubt: new Image(),
-    empty: new Image(),
     bomb: new Image(),
     flag: new Image(),
     hidden: new Image(),
@@ -18,6 +18,7 @@ const height = 20
 const bombsCount = 50
 var isGameStarted = false
 var isGameOver = false
+var isGameWin = false
 
 init()
 
@@ -42,10 +43,8 @@ function draw() {
                     context.drawImage(images.bomb, i * 24, j * 24, 24, 24)
                 } else if (!field[i][j].bomb && field[i][j].flag) {
                     context.drawImage(images.wong_flag, i * 24, j * 24, 24, 24)
-                } else if (field[i][j].number > 0) {
-                    context.drawImage(images.numbers[field[i][j].number], i * 24, j * 24, 24, 24)
                 } else {
-                    context.drawImage(images.empty, i * 24, j * 24, 24, 24)
+                    context.drawImage(images.numbers[field[i][j].number], i * 24, j * 24, 24, 24)
                 }
             } else
                 if (field[i][j].hidden) {
@@ -59,16 +58,16 @@ function draw() {
                 } else {
                     if (field[i][j].bomb) {
                         context.drawImage(images.presed_bomb, i * 24, j * 24, 24, 24)
-                    } else if (field[i][j].number > 0) {
-                        context.drawImage(images.numbers[field[i][j].number], i * 24, j * 24, 24, 24)
                     } else {
-                        context.drawImage(images.empty, i * 24, j * 24, 24, 24)
+                        context.drawImage(images.numbers[field[i][j].number], i * 24, j * 24, 24, 24)
                     }
                 }
         }
     }
     if (isGameOver) {
         context.drawImage(images.gameover, 0, 0, 480, 480)
+    }else if (isGameWin) {
+        context.drawImage(images.gamewin, 0, 0, 480, 480)
     }
     requestAnimationFrame(draw)
 }
@@ -122,16 +121,28 @@ function importImages() {
     }
 }
 
+function testGameWin() {
+    for (i in field) {
+        for (j in field[i]) {
+            if (!field[i][j].bomb && field[i][j].hidden) {
+                return
+            }
+        }
+    }
+    isGameWin = true
+}
+
 function leftClick(x, y) {
     if (!isGameStarted) {
         initField()
         resetBombs(x, y)
         isGameOver = false
+        isGameWin = false
         isGameStarted = true
-
     }
-    if (isGameOver) {
+    if (isGameOver || isGameWin) {
         isGameOver = false
+        isGameWin = false
         isGameStarted = false
         initField()
         return
@@ -175,6 +186,7 @@ function leftClick(x, y) {
             }
         }
     }
+    testGameWin()
 }
 
 function rightClick(x, y) {

@@ -1,4 +1,19 @@
+@charset 'UTF-8';
+
+@font-face{
+    font-family: 'Fixedsys';
+    src: url('./_fonts/fixedsys.ttf');
+}
+
 #screen {
     border: solid 5px darkgray;
     cursor: pointer;
+}
+#scorebar{
+    width: 490px;
+    height: 48px;
+    background-color: gray;
+    font-family: 'Fixedsys';
+    font-size: 36px;
+    color: black;
 }

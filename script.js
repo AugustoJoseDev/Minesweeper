@@ -1,5 +1,7 @@
 const screen = document.getElementById('screen')
+const score=document.getElementById('score')
 const context = screen.getContext('2d')
+var time=0
 
 const images = {
     gamewin: new Image(),
@@ -23,12 +25,27 @@ var isGameWin = false
 init()
 
 function init() {
+    setInterval(timeConter,1000)
     screen.addEventListener('contextmenu', event => event.preventDefault())
     initField()
     importImages()
     draw()
 }
-
+function timeConter(){
+    if(!isGameStarted){
+        score.innerText='000'
+    }else if(!isGameOver && !isGameWin){
+        score.innerText=formatZeros(time,3)
+    }
+    time++
+}
+function formatZeros(time,zeros){
+    var string=''+time
+    while(string.length<zeros){
+        string='0'+string;
+    }
+    return string
+}
 function draw() {
     context.fillStyle = 'white'
     context.fillRect(0, 0, screen.width, screen.height)
@@ -139,6 +156,7 @@ function leftClick(x, y) {
         isGameOver = false
         isGameWin = false
         isGameStarted = true
+        time=0
     }
     if (isGameOver || isGameWin) {
         isGameOver = false

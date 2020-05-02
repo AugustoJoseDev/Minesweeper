@@ -1,3 +1,5 @@
+const baseURL='https://raw.githubusercontent.com/AugustoJoseDev/Minesweeper/master/'
+
 const screen = document.getElementById('screen')
 const score=document.getElementById('score')
 const context = screen.getContext('2d')
@@ -130,10 +132,10 @@ function importImages() {
         if (i == "numbers") {
             for (var j = 0; j < 9; j++) {
                 images.numbers[j] = new Image()
-                images.numbers[j].src = "_images/numbers/" + j + ".png"
+                images.numbers[j].src = baseURL+"_images/numbers/" + j + ".png"
             }
         } else {
-            images[i].src = "_images/" + i + ".png"
+            images[i].src = baseURL+"_images/" + i + ".png"
         }
     }
 }
